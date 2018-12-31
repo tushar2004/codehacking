@@ -42,3 +42,10 @@ Route::get('/admin',function(){
 });
 
 Route::get('/roles','AdminUsersController@user_roles');
+
+
+/* get the path of the user image (using the custom user profile image path method) */
+// Route::get('/photo_path',function(){
+// 	$user = User::findOrFail(1);
+// 	return $user->photo_with_custom_path();
+// });

@@ -2,7 +2,7 @@
 
 @section('content')
 <h1>Create Users</h1>
-	{{ Form::open(['method'=>'POST','action'=>'AdminUsersController@store']) }}
+	{{ Form::open(['method'=>'POST','action'=>'AdminUsersController@store','files'=>true]) }}
 		<div class="form-group">
 			{{ Form::label('name','Name:') }}
 			{{ Form::text('name',null,['class'=>'form-control']) }}
@@ -21,7 +21,12 @@
 
 		<div class="form-group">
 			{{ Form::label('status','Status:') }}
-			{{ Form::select('status',['1'=>'Active','0'=>'Not Active'],'0',['class'=>'form-control']) }}
+			{{ Form::select('status',[1=>'Active',0=>'Not Active'],0,['class'=>'form-control']) }}
+		</div>
+
+		<div class="form-group">
+			{{ Form::label('file','User Profile Image:') }}
+			{{ Form::file('file',null,['class'=>'form-control']) }}
 		</div>
 
 		<div class="form-group">
@@ -33,15 +38,7 @@
 			{{ Form::submit('Create User',['class'=>'btn btn-primary']) }}
 		</div>
 
-	@if(count($errors) > 0)
-	<div class="alert alert-danger">
-		<ul>
-			@foreach($errors->all() as $error)
-				<li>{{$error}}</li>
-			@endforeach
-		</ul>
-	</div>
-	@endif
+	@include('includes.form_error')
 
 	{{ Form::close() }}
 @stop

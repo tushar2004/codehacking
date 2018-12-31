@@ -25,18 +25,18 @@ class UsersRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required',
-            'email' => 'required',
+            'name' => 'required|unique:users|max:191',
+            'email' => 'required|unique:users|max:191',
             'role_id' => 'required',
-            'is_active' => 'required',
+            'status' => 'required',
             'password' => 'required'
         ];
     }
 
     public function messages(){
         return [
-            'role_id.required' => 'The role field is required',
-            'is_active.required' => 'The status field is required'
+            'role_id.required' => 'The role field is required.',
+            // 'status.required' => 'The status field is required.'
         ];
     }
 }
