@@ -1,6 +1,7 @@
 <?php
 use App\User;
 use App\Role;
+use App\Photo;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('admin/users','AdminUsersController');
+Route::resource('/admin/users','AdminUsersController');
 
 Route::get('/admin',function(){
 	return view('admin.index');
@@ -43,6 +44,16 @@ Route::get('/admin',function(){
 
 Route::get('/roles','AdminUsersController@user_roles');
 
+
+Route::get('photo',function(){
+	$user = User::find(4);
+	return $user->photo;
+});
+
+// Route::get('/user_t_photo',function(){
+// 	$photo = Photo::find(1);
+// 	return $photo->user;
+// });
 
 /* get the path of the user image (using the custom user profile image path method) */
 // Route::get('/photo_path',function(){

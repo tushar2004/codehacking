@@ -28,7 +28,7 @@ class UsersRequest extends FormRequest
             'name' => 'required|unique:users|max:191',
             'email' => 'required|unique:users|max:191',
             'role_id' => 'required',
-            'status' => 'required',
+            'is_active' => 'required',
             'password' => 'required'
         ];
     }

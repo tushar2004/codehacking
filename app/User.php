@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     //get the photo associated with the user
     public function photo(){
-        return $this->hasOne('App\Photo');
+        return $this->belongsTo('App\Photo');
     }
 
     public function photo_with_custom_path(){
