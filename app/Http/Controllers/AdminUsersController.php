@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UsersRequest;
+use App\Http\Requests\UsersEditRequest;
 use App\User;
 use App\Role;
 use App\Photo;
@@ -95,7 +96,9 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.users.edit');
+        $user = User::findOrFail($id);
+        $roles = Role::pluck('name','id')->all();
+        return view('admin.users.edit',compact('user','roles'));
     }
 
     /**
@@ -105,9 +108,58 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+
+
+
+    /**
+    Check if the password is there in the request or not.
+    If it is not there, then set the database password to be updated and if it is then encrypt it and then set it to be updated.
+
+    Got it working!!!, :)
+
+    **/
+    // public function password_present_or_not($request,$user){
+    //     return ($request->password == "") ? $user->password : bcrypt($request->password);
+    // }
+
+
+    public function update(UsersEditRequest $request, $id)
     {
         //
+        /* constituent of my own method */
+        // $input = $request->all();
+        $user = User::findOrFail($id);
+
+    /*
+        Done with my own way
+    */
+        // $input['password'] = ($request->password == "") ? $user->password : bcrypt($request->password);
+        // $input['password'] = $this->password_present_or_not($request,$user);
+
+
+
+    /*
+        Edwin's way
+    */
+        if(trim($request->password) == ""){
+            $input = $request->except('password');
+        }else{
+            $input = $request->all();
+            $input['password'] = bcrypt($request->password);
+        }
+
+
+        if($file = $request->file('file')){
+            $name = time() . $file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo = new Photo();
+            $photo->path = $name;
+            $photo->save();
+            $input['photo_id'] = $photo->id;
+        }
+        $user->update($input);
+        return redirect('/admin/users');
     }
 
     /**

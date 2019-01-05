@@ -44,10 +44,18 @@ Route::get('/admin',function(){
 
 Route::get('/roles','AdminUsersController@user_roles');
 
+/* get the photo associated with the user using an accessor */
+// Route::get('photo',function(){
+// 	$user = User::find(4);
+// 	return $user->photo_id;
+// });
 
-Route::get('photo',function(){
-	$user = User::find(4);
-	return $user->photo;
+Route::get('/photos',function(){
+	$users = User::all();
+	foreach($users as $user){
+		// echo $user . "<br>";
+		echo $user->photo . "<br>";
+	}
 });
 
 // Route::get('/user_t_photo',function(){
@@ -56,7 +64,7 @@ Route::get('photo',function(){
 // });
 
 /* get the path of the user image (using the custom user profile image path method) */
-// Route::get('/photo_path',function(){
-// 	$user = User::findOrFail(1);
-// 	return $user->photo_with_custom_path();
-// });
+Route::get('/photo_path',function(){
+	$user = User::findOrFail(7);
+	return $user;
+});

@@ -10,8 +10,6 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    private $directory = "/images/";
-
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +18,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password','role_id','is_active','photo_id'
     ];
+
+    /* The images directory attribute */
+    protected $uploads = "/images/";
+
+    /* The placeholder image attribute */
+    protected $placeholder = "200.png";
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,8 +45,20 @@ class User extends Authenticatable
         return $this->belongsTo('App\Photo');
     }
 
-    public function photo_with_custom_path(){
-        $path = $this->photo->path;
-        return $new_path = $this->directory . $path;
+
+    /* if the user has a photo then return it else set and return a placeholder image */
+    public function image_placeholder(){
+        return $this->photo ? $this->photo->path : $this->uploads . $this->placeholder;
+
+        /* ternary statement for displaying the photo for the user */
+        // {{$user->photo ? $user->photo->path : 'https://via.placeholder.com/150?text=Dummy+Photo'}}
     }
+
+    /**
+    custom function to retrieve the photo path manipulated with the directory path
+    **/
+    // public function photo_with_custom_path(){
+    //     $path = $this->photo->path;
+    //     return $new_path = $this->directory . $path;
+    // }
 }
