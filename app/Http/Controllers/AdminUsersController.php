@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
+use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Role;
 use App\Photo;
 
 class AdminUsersController extends Controller
 {
+
+    public function __construct(){
+        // $this->middleware('auth');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -57,6 +64,8 @@ class AdminUsersController extends Controller
         $input['password'] = bcrypt($request->password);
 
         User::create($input);
+
+        Session::flash('created_user','The user has been created.');
 
         return redirect('/admin/users');
 
@@ -138,7 +147,6 @@ class AdminUsersController extends Controller
         // $input['password'] = $this->password_present_or_not($request,$user);
 
 
-
     /*
         Edwin's way
     */
@@ -148,17 +156,22 @@ class AdminUsersController extends Controller
             $input = $request->all();
             $input['password'] = bcrypt($request->password);
         }
-
-
         if($file = $request->file('file')){
             $name = time() . $file->getClientOriginalName();
             $file->move('images',$name);
-            $photo = new Photo();
-            $photo->path = $name;
-            $photo->save();
+
+            // $photo = new Photo();
+            // $photo->path = $name;
+            // $photo->save();
+
+            /* Edwin's way */
+            $photo = Photo::create(['path'=>$name]);
             $input['photo_id'] = $photo->id;
         }
         $user->update($input);
+
+        Session::flash('updated_user','The user has been updated.');
+
         return redirect('/admin/users');
     }
 
@@ -171,5 +184,23 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        $user = User::findOrFail($id);
+        $user->delete();
+        /* delete the photo associated with the user */
+        if($user->photo){
+            $photo = Photo::findOrFail($user->photo_id);
+            $photo_path = public_path() . $photo->path;
+            $photo->delete();
+        /* remove the image from the images directory */
+            if(file_exists($photo_path)){
+                unlink($photo_path);
+            }
+        }
+        
+        Session::flash('deleted_user','The user has been deleted.');
+
+        return redirect('/admin/users');
+
+
     }
 }

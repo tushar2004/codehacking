@@ -48,11 +48,32 @@ class User extends Authenticatable
 
     /* if the user has a photo then return it else set and return a placeholder image */
     public function image_placeholder(){
-        return $this->photo ? $this->photo->path : $this->uploads . $this->placeholder;
-
+        return ($this->photo != "") ? $this->photo->path : $this->uploads . $this->placeholder;
         /* ternary statement for displaying the photo for the user */
         // {{$user->photo ? $user->photo->path : 'https://via.placeholder.com/150?text=Dummy+Photo'}}
     }
+
+
+    /**
+    Determine, the user is an administrator or not.
+    **/
+    public function isAdmin(){
+        // return ($this->role->name == "administrator" && $this->is_active == 1) ? true : false;
+        if($this->role->name == "administrator" && $this->is_active == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    // /**
+    // Determine, the user is active or not.
+    // **/
+    // public function isActive(){
+    //     return ($this->is_active == 1) ? true : false;
+    // }
+
 
     /**
     custom function to retrieve the photo path manipulated with the directory path

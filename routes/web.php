@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use App\Photo;
@@ -36,7 +37,35 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/admin/users','AdminUsersController');
+
+
+// Route::group(['middleware'=>'admin'],function(){
+// 	Route::resource('/admin/users','AdminUsersController');
+// });
+
+
+Route::middleware(['auth','admin'])->group(function(){
+	// Route::get('/admin',function(){
+	// 	return view('admin.index');
+	// });
+	Route::resource('/admin/users','AdminUsersController');
+	Route::resource('/admin/posts','AdminPostsController');
+});
+
+
+/* Log out the currently authenticated user */
+Route::get('/logout',function(){
+	Auth::logout();
+	return redirect('/login');
+});
+
+
+
+
+
+
+
+
 
 Route::get('/admin',function(){
 	return view('admin.index');
