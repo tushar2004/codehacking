@@ -19,6 +19,11 @@ class Photo extends Model
 	}
 
 
+	/* get the post associated with the photo */
+	public function post(){
+		return $this->hasOne('App\Post');
+	}
+
     // //get the user associated with the photo
     // public function user(){
     // 	return $this->belongsTo('App/User');

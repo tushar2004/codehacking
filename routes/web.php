@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use App\Photo;
+use App\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,3 +98,46 @@ Route::get('/photo_path',function(){
 	$user = User::findOrFail(7);
 	return $user;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************************  Admin Post Routes  *************************************/
+
+/* get the post associated with the user */
+Route::get('/post/{id}',function($id){
+	$user = User::findOrFail($id);
+	foreach($user->posts as $post){
+		echo $post . '<br>';
+	}
+});
+
+/* get the user who created the post */
+Route::get('/user/{id}',function($id){
+	$post = Post::findOrFail($id);
+	return $post->user;
+});
+
+/* get the photo of the post */
+Route::get('/photo/{id}',function($id){
+	$post = Post::findOrFail($id);
+	return $post->photo;
+});
+
+/* get the post associated with the photo */
+Route::get('/photo_post/{id}',function($id){
+	$photo = Photo::findOrFail($id);
+	return $photo->post;
+});
+
+
+/* return the creator of the post */
+Route::get('/post_owner/{id}','AdminPostsController@post_owner');

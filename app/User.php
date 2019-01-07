@@ -66,6 +66,10 @@ class User extends Authenticatable
         }
     }
 
+    public function posts(){
+        return $this->hasMany('App\Post');
+    }
+
 
     // /**
     // Determine, the user is active or not.
