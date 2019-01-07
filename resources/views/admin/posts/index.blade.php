@@ -8,7 +8,7 @@
 			<tr>
 				<th>Id</th>
 				<th>Photo</th>
-				<th>Category Id</th>
+				<th>Category</th>
 				<th>User</th>
 				<th>Title</th>
 				<th>Body</th>
@@ -22,7 +22,7 @@
 					<tr>
 						<td>{{$post->id}}</td>
 						<td><img height="80" width="100" class="img-rounded" src="{{$post->image_placeholder()}}" alt=""></td>
-						<td>{{$post->category_id}}</td>
+						<td>{{$post->category ? $post->category->name : "Uncategorized"}}</td>
 						<td>{{$post->user->name}}</td>
 						<td>{{$post->title}}</td>
 						<td>{{$post->body}}</td>

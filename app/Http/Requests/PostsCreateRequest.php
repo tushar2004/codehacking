@@ -26,7 +26,7 @@ class PostsCreateRequest extends FormRequest
         return [
             //
             'title'       =>'required',
-            // 'category_id' =>'required',
+            'category_id' =>'required',
             'photo_id'    =>'required',
             'body'        =>'required'
         ];
@@ -36,7 +36,7 @@ class PostsCreateRequest extends FormRequest
     {
         return [
             //
-            // 'category_id.required' => 'The category field is required.',
+            'category_id.required' => 'The category field is required.',
             'photo_id.required' => 'The photo field is required.',
         ];
     }
