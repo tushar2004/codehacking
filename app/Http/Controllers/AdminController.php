@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use App\Category;
 
-class AdminCategoriesController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +14,7 @@ class AdminCategoriesController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
-        return view('admin.categories.index',compact('categories'));
+        return view('admin.index');
     }
 
     /**
@@ -25,6 +22,10 @@ class AdminCategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,13 +36,6 @@ class AdminCategoriesController extends Controller
     public function store(Request $request)
     {
         //
-        $validatedData = $request->validate([
-            'name' => 'required|unique:categories'
-        ]);
-
-        $category = Category::create($validatedData);
-        Session::flash('created_category',"The category has been created.");
-        return redirect('/admin/categories');
     }
 
     /**
@@ -64,8 +58,6 @@ class AdminCategoriesController extends Controller
     public function edit($id)
     {
         //
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit',compact('category'));
     }
 
     /**
@@ -78,9 +70,6 @@ class AdminCategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        Category::findOrFail($id)->update($request->all());
-        Session::flash('updated_category','The category has been updated.');
-        return redirect('/admin/categories');
     }
 
     /**
@@ -92,8 +81,5 @@ class AdminCategoriesController extends Controller
     public function destroy($id)
     {
         //
-        Category::findOrFail($id)->delete();
-        Session::flash('deleted_category','The category has been deleted.');
-        return redirect('/admin/categories');
     }
 }

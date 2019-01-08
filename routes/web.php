@@ -55,23 +55,17 @@ Route::middleware(['auth','admin'])->group(function(){
 });
 
 
+/**
+	because of my silly mistake in admin.blade.php I had to contact Edwin and he helped me by suggesting to create a controller for the admin page and calling the /admin route like this:-
+**/
+// Route::get('/admin','AdminController@index')->middleware(['auth','admin']);
+
 /* Log out the currently authenticated user */
 Route::get('/logout',function(){
 	Auth::logout();
 	return redirect('/login');
 });
 
-
-
-
-
-
-
-
-
-Route::get('/admin',function(){
-	return view('admin.index');
-});
 
 Route::get('/roles','AdminUsersController@user_roles');
 
