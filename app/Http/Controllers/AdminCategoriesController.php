@@ -26,6 +26,10 @@ class AdminCategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function create(){
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -92,7 +96,10 @@ class AdminCategoriesController extends Controller
     public function destroy($id)
     {
         //
-        Category::findOrFail($id)->delete();
+        $category = Category::findOrFail($id);
+        $category->posts()->update(['category_id'=>null]);
+        $category->delete();
+
         Session::flash('deleted_category','The category has been deleted.');
         return redirect('/admin/categories');
     }

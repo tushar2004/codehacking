@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+
+@include('includes.tinyeditor')
+
 	<h1 class="text-center">Edit Post</h1>
 
 <div class="row">

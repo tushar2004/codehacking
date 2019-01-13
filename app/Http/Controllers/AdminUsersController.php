@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Role;
 use App\Photo;
+use App\Comment;
 
 class AdminUsersController extends Controller
 {
@@ -167,6 +168,15 @@ class AdminUsersController extends Controller
             /* Edwin's way */
             $photo = Photo::create(['path'=>$name]);
             $input['photo_id'] = $photo->id;
+
+            /* done by my own method (update the comment user photo) */
+            $posts = $user->posts;
+            foreach($posts as $post){
+                $comments = $post->comments()->whereAuthor($user->name)->get();
+                foreach($comments as $comment){
+                    $comment->update(['photo'=>'/images/' . $name]);
+                }
+            }
         }
         $user->update($input);
 

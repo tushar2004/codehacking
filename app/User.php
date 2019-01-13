@@ -48,7 +48,8 @@ class User extends Authenticatable
 
     /* if the user has a photo then return it else set and return a placeholder image */
     public function image_placeholder(){
-        return ($this->photo != "") ? $this->photo->path : $this->uploads . $this->placeholder;
+        return ($this->photo == "" || !file_exists(public_path() . $this->photo->path)) ? $this->uploads . $this->placeholder : $this->photo->path;
+        // return public_path() . $this->photo->path;
         /* ternary statement for displaying the photo for the user */
         // {{$user->photo ? $user->photo->path : 'https://via.placeholder.com/150?text=Dummy+Photo'}}
     }
@@ -86,4 +87,11 @@ class User extends Authenticatable
     //     $path = $this->photo->path;
     //     return $new_path = $this->directory . $path;
     // }
+
+
+    /* get the gravatar of the user */
+    public function getGravatarAttribute(){
+        $hash = md5(strtolower(trim($this->attributes['email'])));
+        return "https://www.gravatar.com/avatar/" . $hash;
+    }
 }

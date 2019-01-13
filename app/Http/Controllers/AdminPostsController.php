@@ -9,6 +9,7 @@ use App\Http\Requests\PostsCreateRequest;
 use App\Post;
 use App\Photo;
 use App\Category;
+use App\Comment;
 
 class AdminPostsController extends Controller
 {
@@ -35,7 +36,10 @@ class AdminPostsController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        /* return the results keeping in mind the pagination */
+        $posts = Post::paginate(2);
+        /* return all the posts */
+        // $posts = Post::all();
         return view('admin.posts.index',compact('posts'));
     }
 
@@ -163,4 +167,21 @@ class AdminPostsController extends Controller
     //     $post = Post::findOrFail($id);
     //     return $post->user->name;
     // }
+
+    public function post($slug){
+        $post = Post::findBySlugOrFail($slug);
+        $categories = Category::all();
+        $comments = $post->comments()->whereIsActive(1)->get();
+        return view('post',compact('post','categories','comments'));
+    }
+
+    /**
+    custom method for displaying the comments for specific post
+    **/
+    // public function post_comments($id){
+    //     // return "it's working";
+    //     $comments = Post::findOrFail($id)->comments;
+    //     return view('admin.posts.comments',compact('comments'));
+    // }
+
 }

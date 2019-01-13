@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
 	@if(Session::has('deleted_user'))
 		<p class="bg-danger">{{session('deleted_user')}}</p>
 	@elseif(Session::has('updated_user'))
@@ -22,6 +21,7 @@
 	        <th>Status</th>
 	        <th>Created</th>
 	        <th>Updated</th>
+	        <th>Delete User</th>
 	      </tr>
 	    </thead>
 	    <tbody>

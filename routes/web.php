@@ -38,7 +38,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/post/{slug}',['as'=>'home.post','uses'=>'AdminPostsController@post']);
 
+/* My way (Though I know it is an unsecure way) */
+// Route::get('/admin/comments/approve/{id}',['as'=>'post.comment.approve','uses'=>'PostCommentsController@approve']);
+
+// Route::get('/admin/comments/unapprove/{id}',['as'=>'post.comment.unapprove','uses'=>'PostCommentsController@unapprove']);
 
 // Route::group(['middleware'=>'admin'],function(){
 // 	Route::resource('/admin/users','AdminUsersController');
@@ -49,9 +54,27 @@ Route::middleware(['auth','admin'])->group(function(){
 	Route::get('/admin',function(){
 		return view('admin.index');
 	});
+
 	Route::resource('/admin/users','AdminUsersController');
 	Route::resource('/admin/posts','AdminPostsController');
 	Route::resource('/admin/categories','AdminCategoriesController');
+	Route::resource('/admin/media','AdminMediasController');
+	Route::resource('/admin/comments','PostCommentsController');
+	Route::resource('/admin/comment/replies','CommentRepliesController');
+
+	/* custom route for deleting bulk media */
+	Route::delete('/admin/delete/media','AdminMediasController@deleteMedia');
+
+	/* custom route for displaying the comments related to a specific post */
+	// Route::get('/admin/post/{id}/comments',['as'=>'post.comments','uses'=>'AdminPostsController@post_comments']);
+
+});
+
+
+Route::middleware(['auth'])->group(function(){
+	Route::post('/comment/reply','CommentRepliesController@createReply');
+	Route::get('/laravel-filemanager', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
+    Route::post('/laravel-filemanager/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
 });
 
 
@@ -75,24 +98,24 @@ Route::get('/roles','AdminUsersController@user_roles');
 // 	return $user->photo_id;
 // });
 
-Route::get('/photos',function(){
-	$users = User::all();
-	foreach($users as $user){
-		// echo $user . "<br>";
-		echo $user->photo . "<br>";
-	}
-});
-
-// Route::get('/user_t_photo',function(){
-// 	$photo = Photo::find(1);
-// 	return $photo->user;
+// Route::get('/photos',function(){
+// 	$users = User::all();
+// 	foreach($users as $user){
+// 		// echo $user . "<br>";
+// 		echo $user->photo . "<br>";
+// 	}
 // });
 
-/* get the path of the user image (using the custom user profile image path method) */
-Route::get('/photo_path',function(){
-	$user = User::findOrFail(7);
-	return $user;
-});
+// // Route::get('/user_t_photo',function(){
+// // 	$photo = Photo::find(1);
+// // 	return $photo->user;
+// // });
+
+// /* get the path of the user image (using the custom user profile image path method) */
+// Route::get('/photo_path',function(){
+// 	$user = User::findOrFail(7);
+// 	return $user;
+// });
 
 
 
@@ -108,31 +131,31 @@ Route::get('/photo_path',function(){
 /*****************************************  Admin Post Routes  *************************************/
 
 /* get the post associated with the user */
-Route::get('/post/{id}',function($id){
-	$user = User::findOrFail($id);
-	foreach($user->posts as $post){
-		echo $post . '<br>';
-	}
-});
+// Route::get('/post/{id}',function($id){
+// 	$user = User::findOrFail($id);
+// 	foreach($user->posts as $post){
+// 		echo $post . '<br>';
+// 	}
+// });
 
-/* get the user who created the post */
-Route::get('/user/{id}',function($id){
-	$post = Post::findOrFail($id);
-	return $post->user;
-});
+// /* get the user who created the post */
+// Route::get('/user/{id}',function($id){
+// 	$post = Post::findOrFail($id);
+// 	return $post->user;
+// });
 
-/* get the photo of the post */
-Route::get('/photo/{id}',function($id){
-	$post = Post::findOrFail($id);
-	return $post->photo;
-});
+// /* get the photo of the post */
+// Route::get('/photo/{id}',function($id){
+// 	$post = Post::findOrFail($id);
+// 	return $post->photo;
+// });
 
-/* get the post associated with the photo */
-Route::get('/photo_post/{id}',function($id){
-	$photo = Photo::findOrFail($id);
-	return $photo->post;
-});
+// /* get the post associated with the photo */
+// Route::get('/photo_post/{id}',function($id){
+// 	$photo = Photo::findOrFail($id);
+// 	return $photo->post;
+// });
 
 
-/* return the creator of the post */
-Route::get('/post_owner/{id}','AdminPostsController@post_owner');
+// /* return the creator of the post */
+// Route::get('/post_owner/{id}','AdminPostsController@post_owner');
