@@ -10,6 +10,7 @@ use App\Role;
 use App\User;
 use App\Photo;
 use PDF;
+use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
@@ -18,6 +19,9 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $hello = "hello";
+
     public function index()
     {
         //
@@ -46,7 +50,12 @@ class AdminController extends Controller
         //     'unapproved_comments' => $unapproved_comments,
         // ];
         // return view('admin.index',compact('counts'));
-        // $view = \View::make('admin.users.index');
+
+        /**
+            pdf generator
+        **/
+        // $view = \View::make('admin.index',compact('posts_count','categories_count','comments_count','roles_count','users_count','photos_count','approved_comments','unapproved_comments'));
+        // $view = \View::make('admin.users.index',compact('users'));
         // $html = $view->render();
         // PDF::SetTitle('Hello World');
         // PDF::AddPage();
