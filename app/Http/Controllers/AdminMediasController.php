@@ -42,6 +42,7 @@ class AdminMediasController extends Controller
                 /* delete the photos from the images directory */
                 unlink(public_path() . $photo->path);
             }
+            Session::flash('deleted_media','The Photo(s) have been deleted.');
             return redirect()->back();
         }else{
             return redirect()->back();

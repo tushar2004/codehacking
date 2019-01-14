@@ -2,13 +2,6 @@
 
 @section('content')
 
-@if(Session::has('unapproved'))
-	<p class="bg-danger">{{session('unapproved')}}</p>
-@elseif(Session::has('approved'))
-	<p class="bg-success">{{session('approved')}}</p>
-@else
-	<p class="bg-danger">{{session('deleted_comment')}}</p>
-@endif
 
 @if(count($comments) > 0)
 	<h1>Comments</h1>

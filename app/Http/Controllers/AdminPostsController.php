@@ -81,6 +81,7 @@ class AdminPostsController extends Controller
 
         $input = $this->is_image_there($request,$input);
         $user->posts()->create($input);
+        $request->session()->flash('created_post','The post has been created.');
         return redirect('/admin/posts');
     }
 
@@ -101,10 +102,10 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
         // 
-        $post = Post::findOrFail($id);
+        $post = Post::findBySlug($slug);
         $categories = Category::pluck('name','id')->all();
         return view('admin.posts.edit',compact('post','categories'));
     }
@@ -118,7 +119,7 @@ class AdminPostsController extends Controller
      */
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         //
         // if($request->photo_id == ""){
@@ -139,7 +140,7 @@ class AdminPostsController extends Controller
         // }
 
         $input = $this->is_image_there($request,$input);
-        Auth::user()->posts()->whereId($id)->first()->update($input);
+        Auth::user()->posts()->whereId($slug)->first()->update($input);
         return redirect('/admin/posts');
     }
 
@@ -153,7 +154,11 @@ class AdminPostsController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        unlink(public_path() . $post->photo->path);
+
+        /* commented out just for development purposes */
+        // if(file_exists(public_path() . $post->photo->path)){
+        //     unlink(public_path() . $post->photo->path);
+        // }
         $post->photo()->delete();
         $post->delete();
         Session::flash('deleted_post','The Post has been deleted');
@@ -166,22 +171,6 @@ class AdminPostsController extends Controller
     // public function post_owner($id){
     //     $post = Post::findOrFail($id);
     //     return $post->user->name;
-    // }
-
-    public function post($slug){
-        $post = Post::findBySlugOrFail($slug);
-        $categories = Category::all();
-        $comments = $post->comments()->whereIsActive(1)->get();
-        return view('post',compact('post','categories','comments'));
-    }
-
-    /**
-    custom method for displaying the comments for specific post
-    **/
-    // public function post_comments($id){
-    //     // return "it's working";
-    //     $comments = Post::findOrFail($id)->comments;
-    //     return view('admin.posts.comments',compact('comments'));
     // }
 
 }

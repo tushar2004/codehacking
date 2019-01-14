@@ -4,14 +4,6 @@
 
 <!-- <h1>Categories</h1> -->
 
-@if(Session::has('deleted_category'))
-	<p class="bg-danger">{{session('deleted_category')}}</p>
-@elseif(Session::has('updated_category'))
-	<p class="bg-success">{{session('updated_category')}}</p>
-@elseif(Session::has('created_category'))
-	<p class="bg-info">{{session('created_category')}}</p>	
-@endif
-
 <div class="col-sm-6">
 	<h2 class="text-gray-dark">Create Category</h2>
 	{{Form::open(['method'=>'POST','action'=>'AdminCategoriesController@store'])}}

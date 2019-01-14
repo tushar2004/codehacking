@@ -1,48 +1,54 @@
-@extends('layouts.blog-post')
+@extends('layouts.blog-home')
 
 @section('content')
-@if(Session::has('comment_message'))
-	<p class="bg-success">{{session('comment_message')}}</p>
-@else
-    <p class="bg-success">{{session('comment_reply_created')}}</p>
-@endif
 
-@if($post)
-	<h1>{{$post->title}}</h1>	
+<div class="row">
+	<div class="col-md-8">
+		
+		<!-- custom made commenting system flash messages -->
+		@include('includes.flash_messages')
 
-<!-- Author -->
-<p class="lead">
-    by <a href="#">{{$post->user->name}}</a>
-</p>
+		@if($post)
+			<h1>{{$post->title}}</h1>	
 
-<hr>
+		<!-- Author -->
+		<p class="lead">
+		    by <code>{{$post->user->name}}</code>
+		</p>
 
-<!-- Date/Time -->
-<!-- <p><span class="glyphicon glyphicon-time"></span> Posted on {{$post->created_at->format('F d, Y \\a\\t h:i A')}} </p> -->
-<p><span class="glyphicon glyphicon-time"></span> Posted {{$post->created_at->diffForHumans()}} </p>
+		<hr>
 
-<hr>
+		<!-- Date/Time -->
+		<!-- <p><span class="glyphicon glyphicon-time"></span> Posted on {{$post->created_at->format('F d, Y \\a\\t h:i A')}} </p> -->
+		<p><span class="glyphicon glyphicon-time"></span> Posted {{$post->created_at->diffForHumans()}} </p>
 
-<!-- August 24, 2013 at 9:00 PM -->
+		<hr>
 
-<!-- Preview Image -->
-<img class="img" height="500" width="700" src="{{$post->image_placeholder()}}" alt="">
+		<!-- August 24, 2013 at 9:00 PM -->
 
-<hr>
+		<!-- Preview Image -->
+		<img class="img" height="500" width="700" src="{{$post->image_placeholder()}}" alt="">
 
-<!-- Post Content -->
-<p class="lead">{!! $post->body !!}</p>
+		<hr>
 
-<hr>
+		<!-- Post Content -->
+		<p class="lead">{!! $post->body !!}</p>
 
-<!-- Blog Comments -->
+		<hr>
 
-@else
-    <h1 class="text-center">No Post Found</h1>
-@endif
+		<!-- Blog Comments -->
 
-<!-- The traditional commenting system is in our includes folder in 'traditional_commenting_system.blade.php' file -->
+		@else
+		    <h1 class="text-center">No Post Found</h1>
+		@endif
+	</div>
 
-@include('includes.disqus_comment')
+	@include('front.home_sidebar_nav')
 
+	<!-- The custom made commenting system is in the includes folder in 'traditional_commenting_system.blade.php' file -->
+	<div class="col-sm-6">
+		@include('includes.disqus_comment')
+	</div>
+
+</div>
 @stop

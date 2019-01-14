@@ -2,12 +2,6 @@
 
 @section('content')
 
-@if(Session::has('deleted_media'))
-	<p class="bg-danger">{{session('deleted_media')}}</p>
-@elseif(Session::has('uploaded_media'))
-	<p class="bg-info">{{session('uploaded_media')}}</p>
-@endif
-
 @if(count($photos) > 0)
 <h1>Photos</h1>
 

@@ -2,14 +2,6 @@
 
 @section('content')
 
-@if(Session::has('Approved'))
-	<p class="bg-success">{{session('Approved')}}</p>
-@elseif(Session::has('Unapproved'))
-	<p class="bg-danger">{{session('Unapproved')}}</p>	
-@else
-	<p class="bg-danger">{{session('deleted_reply')}}</p>
-@endif
-
 	@if(count($replies) > 0)
 		<h1 class="text-center">Comment Replies</h1>
 		<table class="table table-hover">
