@@ -25,6 +25,36 @@
 	</div>
 @endif
 
+<!-- admin vocabularies area -->
+@if(Session::has('vocabulary_created'))
+	<div class="alert alert-success">
+		<p><span class="glyphicon glyphicon-ok"> {{session('vocabulary_created')}}</span></p>
+	</div>
+@elseif(Session::has('vocabulary_updated'))
+	<div class="alert alert-success">
+		<p><span class="glyphicon glyphicon-ok"> {{session('vocabulary_updated')}}</span></p>
+	</div>
+@elseif(Session::has('vocabulary_deleted'))
+	<div class="alert alert-danger">
+		<p><span class="glyphicon glyphicon-ok"> {{session('vocabulary_deleted')}}</span></p>
+	</div>
+@endif
+
+<!-- admin galleries area -->
+@if(Session::has('gallery_created'))
+	<div class="alert alert-info">
+		<p><span class="glyphicon glyphicon-ok"> {{session('gallery_created')}}</span></p>
+	</div>
+@elseif(Session::has('gallery_deleted'))
+	<div class="alert alert-danger">
+		<p><span class="glyphicon glyphicon-ok"> {{session('gallery_deleted')}}</span></p>
+	</div>
+@elseif(Session::has('gallery_photos_uploaded'))
+	<div class="alert alert-success">
+		<p><span class="glyphicon glyphicon-ok">  {{session('gallery_photos_uploaded')}}</span></p>
+	</div>
+@endif
+
 <!-- admin comments area -->
 
 @if(Session::has('unapproved'))
@@ -76,8 +106,12 @@
 		<p><span class="glyphicon glyphicon-ok"></span> {{session('deleted_post')}}</p>
 	</div>
 @elseif(Session::has('created_post'))
-	<div class="alert alert-success">
+	<div class="alert alert-info">
 		<p><span class="glyphicon glyphicon-ok"></span> {{session('created_post')}}</p>
+	</div>
+@elseif(Session::has('updated_post'))
+	<div class="alert alert-success">
+		<p><span class="glyphicon glyphicon-ok"></span> {{session('updated_post')}}</p>
 	</div>
 @endif
 

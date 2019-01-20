@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Vocabulary;
 use App\Category;
 
-class AdminCategoriesController extends Controller
+class AdminVocabulariesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,8 @@ class AdminCategoriesController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
-        return view('admin.categories.index',compact('categories'));
+        $vocabularies = Vocabulary::all();
+        return view('admin.vocabularies.index',compact('vocabularies'));
     }
 
     /**
@@ -25,8 +26,8 @@ class AdminCategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function create(){
+    public function create()
+    {
         //
     }
 
@@ -38,15 +39,9 @@ class AdminCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $validatedData = $request->validate([
-            'name' => 'required|unique:categories'
-        ]);
-
-        $validatedData['vocabulary_id'] = $request->vocabulary_id;
-
-        $category = Category::create($validatedData);
-        Session::flash('created_category',"The category has been created.");
+        //;
+        Vocabulary::create($request->all());
+        $request->session()->flash('vocabulary_created','The vocabulary has been created.');
         return redirect()->back();
     }
 
@@ -59,6 +54,8 @@ class AdminCategoriesController extends Controller
     public function show($id)
     {
         //
+        $categories = Vocabulary::findOrFail($id)->categories;
+        return view('admin.vocabularies.show',compact('categories','id'));
     }
 
     /**
@@ -70,8 +67,8 @@ class AdminCategoriesController extends Controller
     public function edit($id)
     {
         //
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit',compact('category'));
+        $vocabulary = Vocabulary::findOrFail($id);
+        return view('admin.vocabularies.edit',compact('vocabulary'));
     }
 
     /**
@@ -84,11 +81,10 @@ class AdminCategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $category = Category::findOrFail($id);
-        $category->update($request->all());
-        $vocabulary_id = $category->vocabulary->id;
-        Session::flash('updated_category','The category has been updated.');
-        return redirect('/admin/taxonomy/' . $vocabulary_id);
+        $vocabulary = Vocabulary::findOrFail($id);
+        $vocabulary->update($request->all());
+        $request->session()->flash('vocabulary_updated','The vocabulary has been updated.');
+        return redirect('/admin/taxonomy');
     }
 
     /**
@@ -100,11 +96,9 @@ class AdminCategoriesController extends Controller
     public function destroy($id)
     {
         //
-        $category = Category::findOrFail($id);
-        $category->posts()->update(['category_id'=>0]);
-        $category->delete();
-
-        Session::flash('deleted_category','The category has been deleted.');
-        return redirect()->back();
+        $vocabulary = Vocabulary::findOrFail($id);
+        $vocabulary->delete();
+        Session::flash('vocabulary_deleted','The vocabulary has been deleted.');
+        return redirect('/admin/taxonomy');
     }
 }

@@ -4,6 +4,8 @@ use App\User;
 use App\Role;
 use App\Photo;
 use App\Post;
+use App\Category;
+use App\Vocabulary;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,9 +54,20 @@ Route::middleware(['auth','admin'])->group(function(){
 	Route::resource('/admin/media','AdminMediasController');
 	Route::resource('/admin/comments','PostCommentsController');
 	Route::resource('/admin/comment/replies','CommentRepliesController');
+	Route::resource('admin/taxonomy','AdminVocabulariesController');
+	Route::resource('/admin/gallery','AdminGalleryController');
+
+	Route::get('/admin/gallery/{id}/upload',['as'=>'gallery.uploadpage','uses'=>'AdminGalleryController@upload_photos']);
+
+	Route::get('/admin/galleries',['as'=>'gallery.galleries','uses'=>'AdminGalleryController@galleries']);
+
+	Route::post('/admin/gallery/upload',['as'=>'gallery.upload','uses'=>'AdminGalleryController@upload']);
+
+	// Route::post('/admin/create/gallery',['as'=>'create.gallery','uses'=>'AdminGalleryController@create_gallery']);
 
 	/* custom route for deleting bulk media */
 	Route::delete('/admin/delete/media','AdminMediasController@deleteMedia');
+
 
 	/* custom route for displaying the comments related to a specific post */
 	// Route::get('/admin/post/{id}/comments',['as'=>'post.comments','uses'=>'AdminPostsController@post_comments']);
@@ -148,6 +161,19 @@ Route::get('/logout','Auth\LoginController@logout');
 // 	$user = User::findOrFail(7);
 // 	return $user;
 // });
+
+// /* get the categories related to a vocabulary */
+Route::get('/vocabulary/{id}/categories',function($id){
+	$vocabulary = Vocabulary::findOrFail($id);
+	$categories = $vocabulary->categories;
+	foreach($categories as $category){
+		// echo $category->name . "<br>";
+		$posts = $category->posts;
+		foreach($posts as $post){
+			echo $post->id . ") " . $post->title . "<br>";
+		}
+	}
+});
 
 // /* return the creator of the post */
 // Route::get('/post_owner/{id}','AdminPostsController@post_owner');

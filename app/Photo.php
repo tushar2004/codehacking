@@ -11,7 +11,7 @@ class Photo extends Model
 	private $uploads = "/images/";
 	private $placeholder = "200.png";
 
-	protected $fillable = ['path'];
+	protected $fillable = ['path','gallery_id'];
 
 
 	/* get the photo associated with the user using an accessor */
@@ -37,6 +37,10 @@ class Photo extends Model
 		}else{
 			return $this->path;
 		}
+	}
+
+	public function gallery(){
+		return $this->belongsTo('App\Gallery');
 	}
 
     // //get the user associated with the photo

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Photo;
+use App\Vocabulary;
+use App\Gallery;
+use App\Category;
 
 class AdminMediasController extends Controller
 {
@@ -23,8 +26,13 @@ class AdminMediasController extends Controller
     	$file = $request->file('file');
     	$name = time() . $file->getClientOriginalName();
     	$file->move('images',$name);
-    	Session::flash('uploaded_media','The Photo(s) have been uploaded.');
-    	$photo = Photo::create(['path'=>$name]);
+        $gallery_id = Gallery::whereName('test')->get()->first()->id();
+        $data = [
+            'path' => $name,
+            'gallery_id' => $gallery_id
+        ];
+        $photo = Photo::create($data);
+        Session::flash('uploaded_media','The Photo(s) have been uploaded.');
     }
 
     public function destroy($id){

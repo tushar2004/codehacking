@@ -10,6 +10,7 @@ use App\Post;
 use App\Photo;
 use App\Category;
 use App\Comment;
+use App\Vocabulary;
 
 class AdminPostsController extends Controller
 {
@@ -37,7 +38,7 @@ class AdminPostsController extends Controller
     {
         //
         /* return the results keeping in mind the pagination */
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(5);
         /* return all the posts */
         // $posts = Post::all();
         return view('admin.posts.index',compact('posts'));
@@ -51,7 +52,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        $categories = Category::pluck('name','id')->all();
+        $vocabulary_id = Vocabulary::whereName('posts')->get()->first()->id;
+        $categories = Category::whereVocabularyId($vocabulary_id)->pluck('name','id')->all();
         return view('admin.posts.create',compact('categories'));
     }
 
@@ -106,7 +108,8 @@ class AdminPostsController extends Controller
     {
         // 
         $post = Post::findBySlug($slug);
-        $categories = Category::pluck('name','id')->all();
+        $vocabulary_id = Vocabulary::whereName('posts')->get()->first()->id;
+        $categories = Category::whereVocabularyId($vocabulary_id)->pluck('name','id')->all();
         return view('admin.posts.edit',compact('post','categories'));
     }
 
@@ -141,6 +144,7 @@ class AdminPostsController extends Controller
 
         $input = $this->is_image_there($request,$input);
         Auth::user()->posts()->whereId($slug)->first()->update($input);
+        $request->session()->flash('updated_post','The post has been updated.');
         return redirect('/admin/posts');
     }
 
