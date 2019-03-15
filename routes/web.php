@@ -7,6 +7,7 @@ use App\Post;
 use App\Category;
 use App\Vocabulary;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +75,91 @@ Route::middleware(['auth','admin'])->group(function(){
 
 });
 
+
+Route::get('/image',function() {
+	// $img = Image::make('images/certificate.jpg')->orientate();
+// 	$img = Image::canvas(1920,800);
+// 	$img->insert('images/certificate.jpg');
+// 	// $img->text('This is just some random text to test that it\'s working',200,200);
+// 	$img->text('Certificate of Completion', 825, 375, function($font) {
+// 	    $font->file(public_path('fonts/CaviarDreams.ttf'));
+// 	    $font->size(72);
+// 	    $font->color('#000000');
+// 	    $font->align('center');
+// 	    $font->valign('top');
+// 	    $font->angle(0);
+// 	});
+
+// $mpdf = new \Mpdf\Mpdf();
+
+
+$html = '
+<style style="text/css">
+body {
+  background-image: url("/images/certificate.jpg");
+  background-image-resize: 6; // mpdf style class
+}
+.centrar{
+	display:block;
+    position: absolute;
+    border: 0px solid red;
+    width: 75%;
+    left: 0 auto;
+    right: 0px !important;
+    padding-top: 50px;
+    padding-right: 0px !important;
+    padding-bottom: 50px;
+    padding-left: 130px;
+    top: 30%;
+    text-align: center;
+    font-size: 2em;
+    font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+    font-weight: bold;
+}
+.points{
+    position: absolute;
+    border: 0px solid green;
+    width: 63.5%;
+    left: 0 auto;
+    top: 64.7%;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+    font-weight: bold;
+}
+</style>
+<p class="centrar">'. ucwords('some name here some name here some name here some name here some name glyphicon-heart-empty some name here') .'</p>
+<p class="centrar points">30</p>
+';
+
+    $mpdf = new \Mpdf\Mpdf(['c','A4','','',42,15,67,67,20,15]);
+    $mpdf->SetDisplayMode('fullpage');
+    $mpdf->AddPage('L','','','','',25,25,55,45,18,12);
+    $mpdf->WriteHTML($html);
+    $mpdf->Output('mpdf.pdf','I');
+    exit;
+
+    //==============================================================
+    //==============================================================
+    //==============================================================
+
+
+
+// $img->text('This is to certify that Rico has successfully completed test course on March 15,2019',825,550, function($font) {
+// 		$font->file(public_path('fonts/CaviarDreams.ttf'));
+// 	    $font->size(52);
+// 	    $font->color('#000000');
+// 	    $font->align('center');
+// 	    $font->valign('top');
+// 	    $font->angle(0);
+// 	});
+
+// 	$another_image = Image::make('images/bjp-lotus.jpg')->resize(150,150);
+// 	$img->insert($another_image,'bottom-center',0,950);
+// 	return $img->response('jpg');
+
+	// dd(public_path('fonts\CHOPS__.TTF'));
+});
 
 Route::middleware(['auth'])->group(function(){
 	Route::post('/comment/reply','CommentRepliesController@createReply');

@@ -12,9 +12,6 @@
 	        <th>Email</th>
 	        <th>Role</th>
 	        <th>Status</th>
-	        <th>Created</th>
-	        <th>Updated</th>
-	        <th>Delete User</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -27,15 +24,7 @@
 	     				<td>{{$user->email}}</td>
 	     				<td>{{$user->role ? $user->role->name : "User has no role"}}</td>
 	     				<td>{{$user->is_active == 1 ? "Active" : "Not active"}}</td>
-	     				<td>{{$user->created_at->diffForHumans()}}</td>
-	     				<td>{{$user->updated_at->diffForHumans()}}</td>
-	     				<td>
-	     					{{Form::open(['method'=>'DELETE','action'=>['AdminUsersController@destroy',$user->id]])}}
-								<div class="form-group">
-								{!! Form::submit('Delete User',['class'=>'btn btn-danger']) !!}
-								</div>
-							{{Form::close()}}
-	     				</td>
+	     				
 	     			</tr>
 	     		@endforeach
 	     	@endif

@@ -168,7 +168,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -230,6 +230,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

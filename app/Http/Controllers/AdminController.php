@@ -27,17 +27,20 @@ class AdminController extends Controller
         //
         /**
          Post::count()
-            or 
+            or
          **/
         $posts_count = Post::all()->count();
         $categories_count = Category::all()->count();
         $comments_count = Comment::all()->count();
         $roles_count = Role::all()->count();
+        $users = User::all();
         $users_count = User::all()->count();
         $photos_count = Photo::all()->count();
-        $approved_comments = Comment::where('is_active',1)->count();
-        $unapproved_comments = Comment::where('is_active',0)->count();
+        $approved_comments = Comment::where('is_active', 1)->count();
+        $unapproved_comments = Comment::where('is_active', 0)->count();
        
+        $user = User::whereId(1)->get()->first();
+
         /* to display the chart using a loop */
         // $counts = [
         //     'users_count' => $users_count,
@@ -57,13 +60,31 @@ class AdminController extends Controller
         // $view = \View::make('admin.index',compact('posts_count','categories_count','comments_count','roles_count','users_count','photos_count','approved_comments','unapproved_comments'));
         // $view = \View::make('admin.users.index',compact('users'));
         // $html = $view->render();
+
+
+
         // PDF::SetTitle('Hello World');
         // PDF::AddPage();
-        // PDF::writeHtml($html,true,false,true,false,'');
+
+        // // set cell padding
+        // PDF::setCellPaddings(1, 1, 1, 1);
+
+        // // set cell margins
+        // PDF::setCellMargins(1, 1, 1, 1);
+
+        // // Multicell test
+        // foreach($users as $user){
+        //     PDF::MultiCell(55, 5,$user->name, 1, 'L', 0, 0, '', '', true, 0, false, true,0,'T');
+        //     PDF::MultiCell(55, 5,$user->email, 1, 'L', 0, 1, '', '', true, 0, false, true,0, 'M');
+        // }
+        
+        // // PDF::writeHtml($html,true,false,true,false,'');
+        // // PDF::writeHTMLCell(100,4,'','',$html,'1',0,false,true,'',true);
         // PDF::Output('hello_world.pdf');
 
-        return view('admin.index',compact('posts_count','categories_count','comments_count','roles_count','users_count','photos_count','approved_comments','unapproved_comments'));
 
+
+        return view('admin.index', compact('posts_count', 'categories_count', 'comments_count', 'roles_count', 'users_count', 'photos_count', 'approved_comments', 'unapproved_comments'));
     }
 
     /**

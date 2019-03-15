@@ -90,7 +90,7 @@
                                 <a href="{{route('gallery.galleries')}}">View Galleries</a>
                             </li>
                             <li>
-                                <a href="{{route('gallery.index')}}">Galleries</a>
+                                <a href="{{route('gallery.index')}}">Create Gallery</a>
                             </li>
                         </ul>
                     </li>

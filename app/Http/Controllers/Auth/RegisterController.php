@@ -71,4 +71,7 @@ class RegisterController extends Controller
             'is_active' => 0
         ]);
     }
+
+
+
 }

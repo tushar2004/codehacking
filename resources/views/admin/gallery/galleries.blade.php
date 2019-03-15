@@ -8,8 +8,8 @@
 		<p>
 			@if(count($gallery->photos) > 0)
 				<div class="col-sm-3">
-					<h3>{{$gallery->category->name}}</h5>
-					<a href="{{route('gallery.show',$gallery->id)}}"><img src="{{$gallery->photos()->first()->path}}" class="img img-thumbnail" height="200" width="200" alt=""></a>
+					<h3><code><a style="text-decoration:none; color:inherit" href="{{route('gallery.show',$gallery->id)}}">{{$gallery->category->name}}</a></code></h5>
+					<a href="{{route('gallery.show',$gallery->id)}}"><img src="{{$gallery->photos()->first()->path}}" class="img img-rounded" height="150" width="200" alt=""></a>
 				</div>
 			@endif
 		</p>
